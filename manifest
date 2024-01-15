@@ -13,6 +13,45 @@ export BUG_REPORT_URL="https://github.com/ChimeraOS/chimeraos/issues"
 export KERNEL_PACKAGE="linux-chimeraos"
 export KERNEL_PACKAGE_ORIGIN="local"
 
+export META_PACKAGE="\
+    kf5 \
+    plasma \
+    plasma-meta \
+    kde-system \
+    fcitx5-im \
+"
+export KDE_PACKAGE_EXTRA="\
+    plasma-wayland-session \
+    plasma-wayland-protocols \
+    ark \
+    kio-extras \
+    kio-fuse \
+    packagekit-qt5 \
+    dolphin \
+    dolphin-plugins \
+    ffmpegthumbs \
+    kdegraphics-thumbnailers \
+    konsole \
+    kate \
+    kdeconnect \
+    partitionmanager \
+    falkon \
+"
+export SYSTEM_PACKAGE_EXTRA="\
+    fcitx5-chinese-addons \
+    fcitx5-pinyin-zhwiki \
+    cpupower \
+    efibootmgr \
+    noto-fonts-cjk \
+    wqy-microhei \
+    coreutils \
+    jq \
+    ntfs-3g \
+    xdg-desktop-portal-gtk \
+"
+# 7-zip-full in archlinuxcn repo
+# 7-zip-full
+
 export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
@@ -29,7 +68,6 @@ export PACKAGES="\
 	dmidecode \
 	dosbox \
 	efibootmgr \
-	epiphany \
 	ethtool \
 	evtest \
 	ffmpeg \
@@ -42,16 +80,6 @@ export PACKAGES="\
 	fuse2 \
 	fwupd \
 	git \
-	gnome-browser-connector \
-	gnome-console \
-	gnome-control-center \
-	gnome-disk-utility \
-	gnome-keyring \
-	gnome-session \
-	gnome-shell \
-	gnome-software \
-	gnome-system-monitor \
-	gnome-text-editor \
 	gst-plugin-pipewire \
 	gzip \
 	haveged \
@@ -146,13 +174,15 @@ export PACKAGES="\
 	wireplumber \
 	wqy-zenhei \
 	xdg-desktop-portal \
-	xdg-desktop-portal-gnome \
 	xdg-desktop-portal-wlr \
 	xdg-user-dirs-gtk \
 	xf86-video-amdgpu \
 	xorg-server \
 	xz \
 	zip \
+	${META_PACKAGE} \
+	${KDE_PACKAGE_EXTRA} \
+	${SYSTEM_PACKAGE_EXTRA} \
 "
 
 export PACKAGE_OVERRIDES="\
