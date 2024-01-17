@@ -227,11 +227,11 @@ export AUR_PACKAGES="\
 	libretro-prosystem-git \
 	libretro-stella2014-git \
 	libretro-virtualjaguar-git \
-	kanit-font \
+	otf-kanit \
+	ttf-kanit \
 	nintendo-udev \
 	opengamepadui-bin \
 	opengamepadui-session-git \
-	pikaur \
 	powerstation-bin \
 	python-vdf \
 	r8152-dkms \
