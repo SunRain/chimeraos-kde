@@ -177,15 +177,15 @@ while IFS= read -r pkg; do
 
         echo "---- data pkg is $pkg"
         cd /extra_pkgs/${pkg};
-        # Building and installing aur package to fix building dependency problem
         # If dependency package in aur, and building failure, using paru to install dependency, then building again
+        # makepkg , add -f -c option?
         su builder -c "while true; do \
-                            if makepkg --noconfirm -s -i -f; then \
+                            if makepkg --noconfirm -s -c -r -f; then \
                                 break; \
                             else \
                                 while true; do \
                                     paru -S --noconfirm ${pkg}; \
-                                    if makepkg --noconfirm -s -i -f; then \
+                                    if makepkg --noconfirm -s -c -r -f; then \
                                         break; \
                                     fi; \
                                 done;    
