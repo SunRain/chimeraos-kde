@@ -40,6 +40,38 @@ BUILD_PATH_BASE="${BUILD_PATH}-base"
 SNAP_PATH="${MOUNT_PATH}/${SYSTEM_NAME}-${VERSION}"
 BUILD_IMG="${PWD}/output/${SYSTEM_NAME}-build.img"
 
+function build_pkgs() {
+    local pkg_path=$1
+    local chroot_path=$2
+
+    while IFS= read -r pkg; do
+    echo "$pkg"
+    arch-chroot ${BUILD_PATH} /bin/bash << \
+        EOF
+        set -e
+        set -x
+
+        source /manifest
+        cd ${chroot_path}/${pkg};
+        # If dependency package in aur, and building failure, using paru to install dependency, then building again
+        # makepkg , add -f -c option?
+        su builder -c "while true; do \
+                            if makepkg --noconfirm -s -c -r -f; then \
+                                break; \
+                            else \
+                                while true; do \
+                                    paru -S --noconfirm ${pkg}; \
+                                    if makepkg --noconfirm -s -c -r -f; then \
+                                        break; \
+                                    fi; \
+                                done;    
+                            fi; \
+                        done"
+EOF
+done < <(find "${pkg_path}" -maxdepth 1 -mindepth 1 -type d -printf '%f\n')
+
+}
+
 function initialize_fs() {
 
     mkdir -p ${MOUNT_PATH}
@@ -151,45 +183,54 @@ EOF
 # done
 
 # for pkg in $(find "${BUILD_PATH}"/extra_pkgs -maxdepth 1 -mindepth 1 -type d -printf '%f\n'); do
-
 #     arch-chroot ${BUILD_PATH} /bin/bash << \
 # EOF
 #         set -e
 #         set -x
-
 #         source /manifest
-
 #         echo "---- data pkg is $pkg"
-
 # EOF
-
 # done
 
 #find "${BUILD_PATH}"/extra_pkgs -maxdepth 1 -mindepth 1 -type d -print0
-while IFS= read -r pkg; do
-    echo "$pkg"
-    arch-chroot ${BUILD_PATH} /bin/bash << \
-        EOF
-        set -e
-        set -x
+# while IFS= read -r pkg; do
+#     echo "$pkg"
+#     arch-chroot ${BUILD_PATH} /bin/bash << \
+#         EOF
+#         set -e
+#         set -x
 
-        source /manifest
+#         source /manifest
+#         cd /extra_pkgs/${pkg};
+#         # If dependency package in aur, and building failure, using paru to install dependency, then building again
+#         # makepkg , add -f -c option?
+#         su builder -c "while true; do \
+#                             if makepkg --noconfirm -s -c -r -f; then \
+#                                 break; \
+#                             else \
+#                                 while true; do \
+#                                     paru -S --noconfirm ${pkg}; \
+#                                     if makepkg --noconfirm -s -c -r -f; then \
+#                                         break; \
+#                                     fi; \
+#                                 done;    
+#                             fi; \
+#                         done"
+# EOF
+# done < <(find "${BUILD_PATH}"/extra_pkgs -maxdepth 1 -mindepth 1 -type d -printf '%f\n')
 
-        echo "---- data pkg is $pkg"
-        cd /extra_pkgs/${pkg};
-        # If dependency package in aur, and building failure, using paru to install dependency, then building again
-        # makepkg , add -f -c option?
-        su builder -c "while true; do \
-                            if makepkg --noconfirm -s -c -r -f; then \
-                                break; \
-                            else \
-                                while true; do \
-                                    paru -S --noconfirm ${pkg}; \
-                                    if makepkg --noconfirm -s -c -r -f; then \
-                                        break; \
-                                    fi; \
-                                done;    
-                            fi; \
-                        done"
-EOF
-done < <(find "${BUILD_PATH}"/extra_pkgs -maxdepth 1 -mindepth 1 -type d -printf '%f\n')
+# build_pkgs "${BUILD_PATH}"/extra_pkgs /extra_pkgs
+
+# mkdir -p ${MOUNT_PATH}/aur_pkgs
+# #find ${BUILD_PATH}/extra_pkgs  -type f -iname '*.pkg.tar*' | xargs -i sudo cp {} ${MOUNT_PATH}/aur_pkgs/
+# #find "${BUILD_PATH}"/extra_pkgs  -type f -iname '*.pkg.tar*' -print0 | xargs -0 -i  cp {} ${MOUNT_PATH}/aur_pkgs/
+##FIXME This is the best style for find && xargs usage?
+# find "${BUILD_PATH}"/extra_pkgs  -type f -iname '*.pkg.tar*' -print0 | xargs -0 -I {} cp {} "${MOUNT_PATH}"/aur_pkgs/
+
+# cp -r ${PWD}/pkgs/* ${BUILD_PATH}/own_pkgs/
+# #Dirty hack to set permission for chroot builder
+# chmod -R 777 ${BUILD_PATH}/own_pkgs
+# build_pkgs "${BUILD_PATH}"/own_pkgs /own_pkgs
+
+# mkdir -p "${MOUNT_PATH}"/own_pkgs
+# find "${BUILD_PATH}"/own_pkgs  -type f -iname '*.pkg.tar*' -print0 | xargs -0 -I {} cp {} "${MOUNT_PATH}"/own_pkgs/
