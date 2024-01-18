@@ -209,7 +209,6 @@ export AUR_PACKAGES="\
 	ayaled \
 	ayn-platform-dkms-git \
 	bcm20702a1-firmware \
-	boxtron \
 	chimera \
 	chimeraos-device-quirks-git \
 	downgrade \
