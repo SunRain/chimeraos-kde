@@ -36,7 +36,7 @@ VERSION_NUMBER=${VERSION}
 
 MOUNT_PATH="/tmp/${SYSTEM_NAME}-build"
 BUILD_PATH="${MOUNT_PATH}/subvolume"
-BUILD_PATH_BASE="${BUILD_PATH}-base"
+BUILD_PATH_SNAPSHOT="${BUILD_PATH}-snapshot"
 SNAP_PATH="${MOUNT_PATH}/${SYSTEM_NAME}-${VERSION}"
 BUILD_IMG="${PWD}/output/${SYSTEM_NAME}-build.img"
 
@@ -47,7 +47,7 @@ function build_pkgs() {
     while IFS= read -r pkg; do
     echo "$pkg"
     arch-chroot ${BUILD_PATH} /bin/bash << \
-        EOF
+EOF
         set -e
         set -x
 
@@ -68,7 +68,7 @@ function build_pkgs() {
                             fi; \
                         done"
 EOF
-done < <(find "${pkg_path}" -maxdepth 1 -mindepth 1 -type d -printf '%f\n')
+    done < <(find "${pkg_path}" -maxdepth 1 -mindepth 1 -type d -printf '%f\n')
 
 }
 
@@ -133,7 +133,7 @@ EOF
 #initialize_fs
 
 # Create snapshot as base image, ${BUILD_PATH} will using as aur pkg build host
-#btrfs subvolume snapshot ${BUILD_PATH} ${BUILD_PATH}-base
+#btrfs subvolume snapshot ${BUILD_PATH} ${BUILD_PATH_SNAPSHOT}
 
 # Fix arch-chroot error
 # mount --bind ${BUILD_PATH} ${BUILD_PATH}
@@ -234,3 +234,6 @@ EOF
 
 # mkdir -p "${MOUNT_PATH}"/own_pkgs
 # find "${BUILD_PATH}"/own_pkgs  -type f -iname '*.pkg.tar*' -print0 | xargs -0 -I {} cp {} "${MOUNT_PATH}"/own_pkgs/
+
+
+
