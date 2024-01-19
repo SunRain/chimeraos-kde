@@ -133,7 +133,7 @@ EOF
 #initialize_fs
 
 # Create snapshot as base image, ${BUILD_PATH} will using as aur pkg build host
-#btrfs subvolume snapshot ${BUILD_PATH} ${BUILD_PATH_SNAPSHOT}
+#btrfs subvolume snapshot -r ${BUILD_PATH} ${BUILD_PATH_SNAPSHOT}
 
 # Fix arch-chroot error
 # mount --bind ${BUILD_PATH} ${BUILD_PATH}
