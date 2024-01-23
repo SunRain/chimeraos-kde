@@ -4,4 +4,4 @@
 .cache/*
 output/*
 rootfs/etc/makepkg.conf
-output
+output/*
