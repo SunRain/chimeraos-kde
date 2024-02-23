@@ -60,6 +60,26 @@ export SYSTEM_PACKAGE_EXTRA="\
 # 7-zip-full in archlinuxcn repo
 # 7-zip-full
 
+export VM_PACKAGES="\
+	xf86-video-qxl \
+	xf86-video-vmware \
+	xf86-input-vmmouse \
+	qemu-hw-display-qxl \
+	vulkan-virtio \
+	lib32-vulkan-virtio \
+	xf86-input-void \
+"
+
+export VULKAN_DRIVER="\
+	amdvlk \
+	nvidia-utils \
+	vulkan-intel \
+	vulkan-radeon \
+	vulkan-swrast \
+	vulkan-virtio \
+"
+ #vulkan-driver
+ 
 export PACKAGES="\
 	accountsservice \
 	alsa-firmware \
@@ -133,7 +153,6 @@ export PACKAGES="\
 	libva-vdpau-driver \
 	libxcrypt-compat \
 	libxss \
-	lightdm \
 	linux-firmware \
 	liquidctl \
 	logrotate \
@@ -174,7 +193,7 @@ export PACKAGES="\
 	unzip \
 	usb_modeswitch \
 	usbutils \
-	vim \
+	nano \
 	vulkan-icd-loader \
 	wavpack \
 	wget \
@@ -191,21 +210,22 @@ export PACKAGES="\
 	${META_PACKAGE} \
 	${KDE_PACKAGE_EXTRA} \
 	${SYSTEM_PACKAGE_EXTRA} \
+	${VM_PACKAGES} \
 "
 
 export PACKAGE_OVERRIDES="\
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.7-chos5-1/linux-chimeraos-6.6.7.chos5-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.7-chos5-1/linux-chimeraos-headers-6.6.7.chos5-1-x86_64.pkg.tar.zst\
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-libva-mesa-driver-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-mesa-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-mesa-vdpau-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-vulkan-intel-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/lib32-vulkan-radeon-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/libva-mesa-driver-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/mesa-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/mesa-vdpau-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/vulkan-intel-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
-	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.1-chos1-1/vulkan-radeon-1--23.3.1.chos1-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.10-chos1-2/linux-chimeraos-6.6.10.chos1-2-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/linux-chimeraos/releases/download/v6.6.10-chos1-2/linux-chimeraos-headers-6.6.10.chos1-2-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/lib32-libva-mesa-driver-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/lib32-mesa-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/lib32-mesa-vdpau-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/lib32-vulkan-intel-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/lib32-vulkan-radeon-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/libva-mesa-driver-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/mesa-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/mesa-vdpau-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/vulkan-intel-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
+	https://github.com/ChimeraOS/mesa-chimeraos/releases/download/23.3.3-chos2-1/vulkan-radeon-1--23.3.3.chos2-1-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/repos/2023/06/28/extra/os/x86_64/libretro-pcsx2-11900-2-x86_64.pkg.tar.zst \
 	https://archive.archlinux.org/packages/l/libretro-mame/libretro-mame-85763-1-x86_64.pkg.tar.zst \
 "
@@ -249,11 +269,11 @@ export AUR_PACKAGES="\
 	rtl8821au-dkms-git \
 	rtw89-dkms-git \
 	ryzenadj-git \
-	steam_notif_daemon \
 	steam-removable-media-git \
 	wyvern \
 	zenergy-dkms-git \
 "
+#NOTE 	steam_notif_daemon is private repo now, add later
 
 export SERVICES="\
 	NetworkManager \
@@ -263,13 +283,13 @@ export SERVICES="\
 	fstrim.timer \
 	handycon \
 	haveged \
-	home-swapfile.swap \
-	lightdm \
+	sddm \
 	powerstation \
 	sshd \
 	systemd-timesyncd \
-	swapfile \
 "
+# 	swapfile \
+# 	home-swapfile.swap \
 
 export USER_SERVICES="\
 	chimera.service \
@@ -307,8 +327,7 @@ postinstallhook() {
 	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-fanatec-wheel-perms.rules
 	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-logitech-wheel-perms.rules
 	curl -L -O https://raw.githubusercontent.com/berarma/oversteer/master/data/udev/99-thrustmaster-wheel-perms.rules
-	popd
-
+	
 	# Remove build tools for slimmer image
 	rm /usr/share/libalpm/hooks/70-dkms-install.hook
 	rm /usr/share/libalpm/hooks/70-dkms-upgrade.hook
