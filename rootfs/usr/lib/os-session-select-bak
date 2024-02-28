@@ -4,14 +4,12 @@ set -e
 
 die() { echo >&2 "!! $*"; exit 1; }
 
-# CONF_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
-CONF_FILE="/etc/sddm.conf.d/10-chimeraos-session.conf"
+CONF_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 SENTINEL_FILE="steamos-session-select"
 RETURN_SESSION_FILE="chimeraos-session-return"
 
 # For sanity this shipped file must be present, to ensure we're still on a normal-looking Chimeraos setup.
-# CHECK_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
-CHECK_FILE="//etc/sddm.conf.d/10-chimeraos-session.conf"
+CHECK_FILE="/etc/lightdm/lightdm.conf.d/10-chimeraos-session.conf"
 
 session="${1:-gamescope-session-steam-plus}"
 session_type="wayland"
@@ -42,7 +40,7 @@ if [[ -z $SENTINEL_CREATED ]]; then
     cat "$SENTINEL_FILE"
   )
 
-  return_session=$(grep Session $CONF_FILE | cut -d = -f 2)
+  return_session=$(grep autologin-session $CONF_FILE | cut -d = -f 2)
   return_session=$(
     cd "$HOME"
     mkdir -p "$config_dir"
@@ -62,10 +60,10 @@ fi
 # We use "plasma" as "desktop" to hook up to SteamOS's scripts
 case "$session" in
   plasma-wayland-persistent)
-    session_launcher="plasmawayland"
+    session_launcher="gnome-session"
   ;;
   plasma-x11-persistent)
-    session_launcher="plasma"
+    session_launcher="gnome-session"
   ;;
   desktop|plasma)
     session_launcher="gnome-session-oneshot"
@@ -98,12 +96,12 @@ if [[ $EUID != 0 ]]; then
 fi
 
 {
-  echo "[Autologin]"
-  echo "Session=$session_launcher"
+  echo "[Seat:*]"
+  echo "autologin-session=$session_launcher"
 } > "$CONF_FILE"
 
 echo "Updated system autologin session to $session_launcher"
-systemctl reset-failed sddm
-systemctl restart sddm
-echo "Restarted sddm"
+systemctl reset-failed lightdm
+systemctl restart lightdm
+echo "Restarted LightDM"
 
